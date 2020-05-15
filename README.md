@@ -14,6 +14,6 @@ Example:
 
 Once in position, execute the following command:
 
-    <git clone https://github.com/EllieSky/APIAutomation_Summer2020.git
+    git clone https://github.com/EllieSky/APIAutomation_Summer2020.git
 
 After the command completes, you should have a copy of the project code.

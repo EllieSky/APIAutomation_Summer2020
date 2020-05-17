@@ -2,14 +2,12 @@ import json
 import unittest
 import requests
 
-
 class YahooAPITestCase(unittest.TestCase):
     def test_for_successful_response(self):
         result = requests.get("http://www.yahoo.com")
         self.assertEqual(200, result.status_code)
         # OR
         self.assertTrue('OK' == result.reason)
-
 
 class CareerPortalTests(unittest.TestCase):
     def setUp(self) -> None:

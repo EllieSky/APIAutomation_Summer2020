@@ -45,7 +45,7 @@ class MyPositionsTests(unittest.TestCase):
 
         if aexpected_error_message:
             json_my_positions = json.loads(my_positions.text)
-            self.assertEqual(json_my_positions['code'], aexpected_error_message)
+            self.assertEqual(aexpected_error_message, json_my_positions['code'])
 
     def get_candidate_positions(self, auser_id):
         return requests.get(self.base_url + '/candidates/' + str(auser_id) + '/positions', headers=self.authorization_header)
@@ -59,7 +59,7 @@ class MyPositionsTests(unittest.TestCase):
 
         if aexpected_error_message:
             json_application = json.loads(application.text)
-            self.assertEqual(json_application['code'], aexpected_error_message)
+            self.assertEqual(aexpected_error_message, json_application['code'])
 
     def get_application(self, application_id):
         return requests.get(self.base_url + '/applications/' + str(application_id))

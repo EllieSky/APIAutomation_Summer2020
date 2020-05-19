@@ -1,0 +1,13 @@
+git clone <url>
+  copy remote repository to local disk
+  
+git add
+  add changed filed to your local git index for tracking
+  
+if you don't want git to ever track a file for changes... add it to .gitignore file
+
+git commit (-m)
+	to save changes locally
+	
+git push
+	publish our commited changes to the remote repo

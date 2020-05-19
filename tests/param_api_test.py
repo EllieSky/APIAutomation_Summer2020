@@ -29,10 +29,10 @@ class MyPositionsTests(unittest.TestCase):
         self.authorization_header.update(self.headers)
 
     @parameterized.expand(data)
-    def test_get_candidate_positions(self, test_name, user_id, status_code, reason, expected_error_message):
+    def test_get_candidate_positions(self, test_name, user_id, exp_status_code, reason, expected_error_message):
 
         my_positions = self.get_candidate_positions(user_id)
-        self.assertEqual(status_code, my_positions.status_code)
+        self.assertEqual(exp_status_code, my_positions.status_code)
         self.assertEqual(reason, my_positions.reason)
 
         if expected_error_message:

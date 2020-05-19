@@ -44,16 +44,6 @@ if you rebase:  1 -> 2 -> 3 -> their_change  -> your_change
 
 if you merge:  1 -> 2 -> 3 -> your_change -> their_change
 
-git stash
-   - if you want to save changes you made, but not commit them, and simultaniously remove them to use later
-
-git cherry-pick
-	- to pick and choose one commit at a time, which changes get applied to a branch
-
-git commit --amend
-	only use if you have not pushed your previous commit to the remote repo
-	used to add additional small changes to the previous commit
-
 
 git stash
    - if you want to save changes you made, but not commit them, and simultaniously remove them to use later

@@ -52,12 +52,15 @@ class CareerPortalTests(unittest.TestCase):
         sess = Authenticate()
         all_candidates = sess.get_all_candidates()
         json_all_candidates = json.loads(all_candidates.text)
-        count = len(json_all_candidates)
-        print('Total number of candidates: ' + str(count))
-
+        count1 = len(json_all_candidates)
+        print('Total number of candidates: ' + str(count1))
 
     def test_add_candidate(self):
-        sess = Authenticate
+        sess = Authenticate()
+        all_candidates = sess.get_all_candidates()
+        json_all_candidates = json.loads(all_candidates.text)
+        count1 = len(json_all_candidates)
+        print('Total number of candidates: ' + str(count1))
        # candidate_details = {'firstName': 'Soniya', 'lastName': 'Singhal', 'email': 'ssinghal22@yahoo.com', 'password': 'abc123.', 'id': 20, 'positionsCount': 0}
 
         firstName = 'Soniya'
@@ -66,13 +69,16 @@ class CareerPortalTests(unittest.TestCase):
         password = 'abc123.'
         id = 20
         positionsCount = 7
+        add_candidate = sess.add_candidate(firstName, lastName, email, password, id, positionsCount)
 
-        requests.post('https://recruit-portnov.herokuapp.com/recruit/api/v1' + '/positions',
-                          json={'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password,
-                                'id': id, 'positionsCount': positionsCount})
-       # add_candidate = sess.add_candidate(firstName, lastName, email, password, id, positionsCount)
+        all_candidates = sess.get_all_candidates()
+        json_all_candidates = json.loads(all_candidates.text)
+        count2 = len(json_all_candidates)
+        print('Total number of candidates now: ' + str(count2))
+        self.assertGreater(count2, count1)
 
-        self.assertEqual(5, 5)
+
+
 
 
 

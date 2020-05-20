@@ -12,6 +12,10 @@ class Authenticate(object):
         return requests.get(self.base_url + '/positions')
 
 
+    def get_application(self, id):
+        return requests.get(self.base_url + '/applications/' + str(id))
+
+
     def authenticate(self, email, password):
         resp = self.session.post(self.base_url + '/login', json={"email": email, "password": password})
         json_parsed = json.loads(resp.text)

@@ -43,6 +43,12 @@ class CareerPortalTests(unittest.TestCase):
 
         self.assertEqual(1, len(json_my_positions))
 
+    def test_cannot_login(self):
+        sess = Authenticate()
+        response = sess.authenticate('foo', 'barr')
+        json_parsed = json.loads(response.text)
+        self.assertEqual('Incorrect email: foo', json_parsed['errorMessage'])
+
 
 if __name__ == '__main__':
     unittest.main()

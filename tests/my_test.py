@@ -58,8 +58,21 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_add_candidate(self):
         sess = Authenticate
-        candidate_details = {'firstName': 'Soniya', 'lastName': 'Singhal', 'email': 'ssinghal22@yahoo.com', 'password': 'abc123.', 'id': 20, 'positionsCount': 0}
-        add_candidate = sess.add_candidate(candidate_details)
+       # candidate_details = {'firstName': 'Soniya', 'lastName': 'Singhal', 'email': 'ssinghal22@yahoo.com', 'password': 'abc123.', 'id': 20, 'positionsCount': 0}
+
+        firstName = 'Soniya'
+        lastName = 'Singhal'
+        email = 'ssinghal22@yahoo.com'
+        password = 'abc123.'
+        id = 20
+        positionsCount = 7
+
+        requests.post('https://recruit-portnov.herokuapp.com/recruit/api/v1' + '/positions',
+                          json={'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password,
+                                'id': id, 'positionsCount': positionsCount})
+       # add_candidate = sess.add_candidate(firstName, lastName, email, password, id, positionsCount)
+
+        self.assertEqual(5, 5)
 
 
 

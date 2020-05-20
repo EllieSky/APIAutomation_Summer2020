@@ -12,8 +12,8 @@ class Authenticate(object):
         return requests.get(self.base_url + '/positions')
 
 
-    def add_candidate(self, candidate_details):
-        return self.session.post(self.base_url + '/positions', candidate_details)
+    def add_candidate(self, firstName, lastName, email, password, id, positionsCount):
+        return self.session.post(self.base_url + '/positions', json={'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password, 'id': id, 'positionsCount': positionsCount})
 
 
     def get_application(self, id):

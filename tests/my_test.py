@@ -2,7 +2,9 @@ import json
 import unittest
 import requests
 
-from lib.authentication import Authenticate
+#from lib2.authentication import Authenticate
+from lib2.authentication import Authenticate
+
 
 class YahooAPITestCase(unittest.TestCase):
     def test_for_successful_response(self):

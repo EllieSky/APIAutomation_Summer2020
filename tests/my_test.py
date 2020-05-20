@@ -17,7 +17,6 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_login(self):
         sess = Authenticate() #sess is an object of class, creates instance of class
-
         positions = sess.get_all_positions()
         json_positions = json.loads(positions.text)
         self.assertEqual(5, len(json_positions))
@@ -54,6 +53,14 @@ class CareerPortalTests(unittest.TestCase):
         all_candidates = sess.get_all_candidates()
         json_all_candidates = json.loads(all_candidates.text)
         count = len(json_all_candidates)
+        print('Total number of candidates: ' + str(count))
+
+
+    def test_add_candidate(self):
+        sess = Authenticate
+        candidate_details = {'firstName': 'Soniya', 'lastName': 'Singhal', 'email': 'ssinghal22@yahoo.com', 'password': 'abc123.', 'id': 20, 'positionsCount': 0}
+        add_candidate = sess.add_candidate(candidate_details)
+
 
 
 

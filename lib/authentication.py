@@ -12,6 +12,10 @@ class Authenticate(object):
         return requests.get(self.base_url + '/positions')
 
 
+    def add_candidate(self, candidate_details):
+        return self.session.post(self.base_url + '/positions', candidate_details)
+
+
     def get_application(self, id):
         return requests.get(self.base_url + '/applications/' + str(id))
 

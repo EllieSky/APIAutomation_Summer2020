@@ -4,7 +4,6 @@ import requests
 
 from lib.authentication import Authenticate
 
-
 class YahooAPITestCase(unittest.TestCase):
     def test_for_successful_response(self):
         result = requests.get("http://www.yahoo.com")
@@ -18,6 +17,7 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_login(self):
         sess = Authenticate() #sess is an object of class, creates instance of class
+
         positions = sess.get_all_positions()
         json_positions = json.loads(positions.text)
         self.assertEqual(5, len(json_positions))
@@ -48,6 +48,13 @@ class CareerPortalTests(unittest.TestCase):
         response = sess.authenticate('foo', 'barr')
         json_parsed = json.loads(response.text)
         self.assertEqual('Incorrect email: foo', json_parsed['errorMessage'])
+
+    def test_get_all_candidates(self):
+        sess = Authenticate()
+        all_candidates = sess.get_all_candidates()
+        json_all_candidates = json.loads(all_candidates.text)
+        count = len(json_all_candidates)
+
 
 
 if __name__ == '__main__':

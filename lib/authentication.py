@@ -15,6 +15,11 @@ class Authenticate(object):
     def get_application(self, id):
         return requests.get(self.base_url + '/applications/' + str(id))
 
+    def get_all_candidates(self):
+        return requests.get(self.base_url + '/candidates')
+
+
+
 
     def authenticate(self, email, password):
         resp = self.session.post(self.base_url + '/login', json={"email": email, "password": password})

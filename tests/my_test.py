@@ -19,17 +19,21 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_login(self):
         sess = Authenticate()
+
+        # GET /positions - Returns all positions
         positions = sess.get_all_positions()
         json_positions = json.loads(positions.text)
 
         self.assertEqual(5, len(json_positions))
 
+        # POST /login - Logs in and generates a Bearer token
         result = sess.authenticate("student@example.com", "welcome")
         self.assertEqual(200, result.status_code)
 
         json_parsed = json.loads(result.text)
         self.assertTrue(json_parsed['authenticated'])
 
+        # POST /verify - Verifies the token and returns instance of logged in candidate
         verify_response = sess.perform_user_verification()
         verify_content = json.loads(verify_response.content)
 
@@ -39,6 +43,7 @@ class CareerPortalTests(unittest.TestCase):
         self.assertTrue(email == 'student@example.com')
         self.assertEqual(8, user_id)
 
+        # GET /candidates/{id}/positions - Returns positions candidate applied to
         my_positions = sess.get_candidate_positions(user_id)
         json_my_positions = json.loads(my_positions.text)
 

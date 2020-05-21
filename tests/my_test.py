@@ -108,8 +108,8 @@ class CareerPortalTests(unittest.TestCase):
         for i in range(0, number_of_candidate):
             if candidate_list[i]['firstName'] == 'peter':
                 id_array.append(candidate_list[i]['id'])
-                response = sess.delete_candidate(candidate_list[i]['id'])
-        print(response)
+                sess.delete_candidate(candidate_list[i]['id'])
+
 
     def test_new_candidate_login(self):
         sess = Authenticate()

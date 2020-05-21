@@ -1,5 +1,7 @@
 import json
 import unittest
+
+import data as data
 import requests
 from lib2.authentication import Authenticate
 
@@ -13,7 +15,7 @@ class YahooAPITestCase(unittest.TestCase):
 class CareerPortalTests(unittest.TestCase):
     def setUp(self) -> None:
         pass
-
+    '''
     def test_login(self):
         sess = Authenticate() #sess is an object of class, creates instance of class
         positions = sess.get_all_positions()
@@ -53,18 +55,20 @@ class CareerPortalTests(unittest.TestCase):
         json_all_candidates = json.loads(all_candidates.text)
         count1 = len(json_all_candidates)
         print('Total number of candidates: ' + str(count1))
+        
+    '''
 
     def test_add_candidate(self):
         sess = Authenticate()
         all_candidates = sess.get_all_candidates()
         json_all_candidates = json.loads(all_candidates.text)
         count1 = len(json_all_candidates)
-        print('Total number of candidates: ' + str(count1))
+        print('Total number of candidates first: ' + str(count1))
        # candidate_details = {'firstName': 'Soniya', 'lastName': 'Singhal', 'email': 'ssinghal22@yahoo.com', 'password': 'abc123.', 'id': 20, 'positionsCount': 0}
 
         firstName = 'Soniya'
         lastName = 'Singhal'
-        email = 'ssinghal22@yahoo.com'
+        email = 'ssinghal9@yahoo.com'
         password = 'abc123.'
         add_candidate = sess.add_candidate(firstName, lastName, email, password)
         json_add_candidate = json.loads(add_candidate.text)
@@ -74,7 +78,19 @@ class CareerPortalTests(unittest.TestCase):
         json_all_candidates = json.loads(all_candidates.text)
         count2 = len(json_all_candidates)
         print('Total number of candidates now: ' + str(count2))
-        #self.assertGreater(count2, count1)
+        self.assertGreater(count2, count1)
+
+        ids = []
+        for elem in data['json_all_candidates']:
+            ids.append(elem['id'])
+
+        #sess.authenticate('student@example.com', 'welcome') #login type 1
+        sess.authenticate(email, password)  #login type 2
+
+        delete_candidate = sess.delete_added_candidate(id)
+        self.assertEqual(204, delete_candidate.status_code)
+
+
 
 
 

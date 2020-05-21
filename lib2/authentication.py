@@ -11,17 +11,17 @@ class Authenticate(object):
     def get_all_positions(self):
         return requests.get(self.base_url + '/positions')
 
-
     def add_candidate(self, firstName, lastName, email, password):
          return self.session.post(self.base_url + '/candidates', json={'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password})
-        # json_parsed = json.loads(resp.text)
+
+    def delete_added_candidate(self, id):
+        return self.session.delete(self.base_url + '/candidates/' + str(id))
 
     def get_application(self, id):
         return requests.get(self.base_url + '/applications/' + str(id))
 
     def get_all_candidates(self):
         return requests.get(self.base_url + '/candidates')
-
 
     def authenticate(self, email, password):
         resp = self.session.post(self.base_url + '/login', json={"email": email, "password": password})
@@ -31,10 +31,8 @@ class Authenticate(object):
             self.session.headers.update({'Authorization': 'Bearer ' + token})
         return resp
 
-
     def perform_user_verification(self):
         return self.session.post(self.base_url + '/verify')
-
 
     def get_candidate_positions(self, user_id):
         return self.session.get(self.base_url + '/candidates/' + str(user_id) + '/positions')

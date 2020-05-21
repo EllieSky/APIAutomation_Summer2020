@@ -68,11 +68,12 @@ class CareerPortalTests(unittest.TestCase):
 
         firstName = 'Soniya'
         lastName = 'Singhal'
-        email = 'ssinghal10@yahoo.com'
+        email = 'ssinghal13@yahoo.com'
         password = 'abc123.'
         add_candidate = sess.add_candidate(firstName, lastName, email, password)
         json_add_candidate = json.loads(add_candidate.text)
         id = json_add_candidate['id']
+        print('id of added candidate is: ' + str(id))
 
         all_candidates = sess.get_all_candidates()
         json_all_candidates = json.loads(all_candidates.text)
@@ -80,10 +81,12 @@ class CareerPortalTests(unittest.TestCase):
         print('Total number of candidates now: ' + str(count2))
         self.assertGreater(count2, count1)
 
+        ids = []
+        for elem in json_all_candidates:
+            ids.append(elem['id'])
 
-        # ids = []
-        # for elem in data['json_all_candidates']:
-        #     ids.append(elem['id'])
+        if id in ids:
+            print('Candidate found with id: ' + str(id))
 
 
         # sess.authenticate('student@example.com', 'welcome') #login type 1
@@ -91,6 +94,19 @@ class CareerPortalTests(unittest.TestCase):
 
         delete_candidate = sess.delete_added_candidate(id)
         self.assertEqual(204, delete_candidate.status_code)
+
+        all_candidates = sess.get_all_candidates()
+        json_all_candidates = json.loads(all_candidates.text)
+
+        ids = []
+        for elem in json_all_candidates:
+            ids.append(elem['id'])
+
+        if id not in ids:
+            print('Candidate not found with id: ' + str(id))
+
+
+
 
 
 

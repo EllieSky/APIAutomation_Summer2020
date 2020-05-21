@@ -68,7 +68,7 @@ class CareerPortalTests(unittest.TestCase):
 
         firstName = 'Soniya'
         lastName = 'Singhal'
-        email = 'ssinghal9@yahoo.com'
+        email = 'ssinghal10@yahoo.com'
         password = 'abc123.'
         add_candidate = sess.add_candidate(firstName, lastName, email, password)
         json_add_candidate = json.loads(add_candidate.text)
@@ -80,11 +80,13 @@ class CareerPortalTests(unittest.TestCase):
         print('Total number of candidates now: ' + str(count2))
         self.assertGreater(count2, count1)
 
-        ids = []
-        for elem in data['json_all_candidates']:
-            ids.append(elem['id'])
 
-        #sess.authenticate('student@example.com', 'welcome') #login type 1
+        # ids = []
+        # for elem in data['json_all_candidates']:
+        #     ids.append(elem['id'])
+
+
+        # sess.authenticate('student@example.com', 'welcome') #login type 1
         sess.authenticate(email, password)  #login type 2
 
         delete_candidate = sess.delete_added_candidate(id)

@@ -26,6 +26,15 @@ class Authenticate(object):
     def perform_user_verification(self):
         return self.session.post(self.base_url + '/verify')
 
-
     def get_candidate_positions(self, user_id):
         return self.session.get(self.base_url + '/candidates/' + str(user_id) + '/positions')
+
+    def get_candidates(self):
+        return self.session.get(self.base_url + '/candidates')
+
+    def create_candidate(self, fname, lname, email, passwd):
+        json_data = {"firstName": fname, "lastName": lname, "email": email, "password": passwd}
+        return self.session.post(self.base_url + '/candidates', json=json_data)
+
+    def delete_candidate(self, id):
+        return self.session.delete(self.base_url + '/candidates/' + str(id))

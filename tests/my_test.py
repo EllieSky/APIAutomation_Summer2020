@@ -15,7 +15,7 @@ class YahooAPITestCase(unittest.TestCase):
 class CareerPortalTests(unittest.TestCase):
     def setUp(self) -> None:
         pass
-    '''
+
     def test_login(self):
         sess = Authenticate() #sess is an object of class, creates instance of class
         positions = sess.get_all_positions()
@@ -55,8 +55,7 @@ class CareerPortalTests(unittest.TestCase):
         json_all_candidates = json.loads(all_candidates.text)
         count1 = len(json_all_candidates)
         print('Total number of candidates: ' + str(count1))
-        
-    '''
+
 
     def test_add_candidate(self):
         sess = Authenticate()
@@ -88,7 +87,6 @@ class CareerPortalTests(unittest.TestCase):
         if id in ids:
             print('Candidate found with id: ' + str(id))
 
-
         # sess.authenticate('student@example.com', 'welcome') #login type 1
         sess.authenticate(email, password)  #login type 2
 
@@ -104,17 +102,6 @@ class CareerPortalTests(unittest.TestCase):
 
         if id not in ids:
             print('Candidate not found with id: ' + str(id))
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     unittest.main()

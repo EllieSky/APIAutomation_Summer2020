@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import time
 import random
 import unittest
@@ -90,6 +91,14 @@ class HRMTest(unittest.TestCase):
 
 <<<<<<< HEAD
 =======
+=======
+import unittest
+import bs4
+from requests import Session
+from  faker import Faker
+
+
+>>>>>>> 7cd73810b979b4609f9cfd26217c6482706823d7
 class HRMTestCase(unittest.TestCase):
     def setUpClass(self) -> None:
         self.url = 'http://hrm-online.portnov.com/symfony/web/index.php/auth'
@@ -120,7 +129,10 @@ class HRMTestCase(unittest.TestCase):
         f = Faker
         first_name = f.first_name()
         last_name = f.last_name()
+<<<<<<< HEAD
 >>>>>>> hrm
+=======
+>>>>>>> 7cd73810b979b4609f9cfd26217c6482706823d7
 
 
 if __name__ == '__main__':

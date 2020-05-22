@@ -3,6 +3,13 @@ import json
 import requests
 
 
+def find_candidate_by_id(json_candidates, candidate_id):
+    for candidate in json_candidates:
+        if candidate['id'] == candidate_id:
+            return candidate
+    return None
+
+
 class Authenticate(object):
     def __init__(self):
         self.base_url = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'

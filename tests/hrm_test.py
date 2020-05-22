@@ -67,5 +67,6 @@ class HRMTest(unittest.TestCase):
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
 
 
+
 if __name__ == '__main__':
     unittest.main()

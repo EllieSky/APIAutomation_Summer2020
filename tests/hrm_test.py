@@ -1,7 +1,6 @@
 import os
 import unittest
 import bs4
-from requests import Session
 from faker import Faker
 from requests_toolbelt import MultipartEncoder
 from lib.hrm.steps import HRM
@@ -57,22 +56,6 @@ class HRMTest(unittest.TestCase):
         resp = self.hrm.add_candidate(first_name, last_name, email, resume)
 
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
-
-
-class HRMTestCase(unittest.TestCase):
-    def setUpClass(self) -> None:
-        self.url = 'http://hrm-online.portnov.com/symfony/web/index.php/auth'
-
-        self.sess = Session()
-        self.sess.headers.update({'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'})
-
-
-
-
-
-
-
-
 
 
 

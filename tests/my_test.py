@@ -104,10 +104,8 @@ class CareerPortalTests(unittest.TestCase):
         candidates = sess.get_candidates()
         candidate_list = json.loads(candidates.text)
         number_of_candidate = json.loads(candidates.text).__len__()
-        id_array = []
         for i in range(0, number_of_candidate):
             if candidate_list[i]['firstName'] == 'peter':
-                id_array.append(candidate_list[i]['id'])
                 sess.delete_candidate(candidate_list[i]['id'])
 
 

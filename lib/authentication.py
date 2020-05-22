@@ -15,7 +15,8 @@ class Authenticate(object):
 
 
     def authenticate(self, email, password):
-        resp = self.session.post(self.base_url + '/login', json={"email": email, "password": password})
+        json_data = {"email": email, "password": password}
+        resp = self.session.post(self.base_url + '/login', json=json_data)
         json_parsed = json.loads(resp.text)
         token = json_parsed.get('token', None)
         if token:

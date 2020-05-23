@@ -1,7 +1,5 @@
 import json
-
 import requests
-
 
 class Authenticate(object):
     def __init__(self):

@@ -4,7 +4,6 @@ import requests
 
 from lib.authentication import Authenticate
 
-
 class YahooAPITestCase(unittest.TestCase):
     def test_for_successful_response(self):
         result = requests.get("http://www.yahoo.com")
@@ -60,7 +59,7 @@ class CareerPortalTests(unittest.TestCase):
     def test_create_and_delete_candidate(self):
         sess = Authenticate()
         sess.authenticate("student@example.com", "welcome")
-        self.email = 'peter@pan.com'
+        self.email = 'peter@pan3.com'
         self.password = 'test'
         response_data = sess.create_candidate('peter', 'pan', self.email, self.password)
         self.id = json.loads(response_data.text)['id']
@@ -75,7 +74,7 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_create_and_login(self):
         sess = Authenticate()
-        self.email = 'peter@pan.com'
+        self.email = 'peter@pan9.com'
         self.password = 'test'
         response_data = sess.create_candidate('peter', 'pan', self.email, self.password)
         self.id = json.loads(response_data.text)['id']

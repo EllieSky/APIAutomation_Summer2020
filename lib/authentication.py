@@ -5,8 +5,7 @@ class Authenticate(object):
     def __init__(self):
         self.base_url = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
         self.session = requests.Session()
-        self.session.headers.update({'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
-        )
+        self.session.headers.update({"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"})
 
     def get_all_positions(self):
         return requests.get(self.base_url + '/positions')

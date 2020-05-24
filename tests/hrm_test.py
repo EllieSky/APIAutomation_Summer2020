@@ -1,7 +1,7 @@
 import time
 import random
 import unittest
-import bs4
+from bs4 import BeautifulSoup
 
 from requests import Session
 from faker import Faker
@@ -11,7 +11,7 @@ class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
         self.url = "http://hrm-online.portnov.com/symfony/web/index.php"
         self.sess = Session()
-        self.sess.headers.update({"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"})
+        self.sess.headers.update({"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"})
 
 
     def test_create_employee(self):
@@ -22,7 +22,7 @@ class HRMTest(unittest.TestCase):
         resp = self.sess.get(self.url + login_uri)
 
         # Step 2: extract CSRF token
-        soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        soup = BeautifulSoup(resp.content, 'html5lib')
         result = soup.find('input', attrs={'name': '_csrf_token'})
         token = result['value']
 
@@ -47,7 +47,7 @@ class HRMTest(unittest.TestCase):
         resp = self.sess.get(self.url + add_emp_uri)
 
         # Step 5: Extract CSRF token
-        soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        soup = BeautifulSoup(resp.content, 'html5lib')
         token = soup.find('input', attrs={'name': '_csrf_token'})['value']
 
         emp_id = str(time.time()).split('.')[-1]
@@ -75,7 +75,7 @@ class HRMTest(unittest.TestCase):
 
         # Optional step, to check that data posted correctly
         resp = self.sess.get(resp.url)
-        soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        soup = BeautifulSoup(resp.content, 'html5lib')
 
         actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
 

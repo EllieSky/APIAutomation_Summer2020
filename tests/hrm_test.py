@@ -4,22 +4,21 @@ import unittest
 import bs4
 import requests
 from faker import Faker
+from lib2.hrm_authenticate import Authenticate
+
 
 class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.url = 'http://hrm-online.portnov.com/symfony/web/index.php'
-        self.sess = requests.Session() #can use either case of session, uppercase is better
-        self.sess.headers.update({'User-Agent':
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'})
+        pass
 
     def test_create_employee(self):
+        sess = Authenticate()
 
         # Step 1: get the landing page - contains login form
-        login_uri = '/auth/login'
-        resp = self.sess.get(self.url + login_uri)
+        login_page = sess.login_page()
 
         # Step 2: extract CSRF token
-        soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        soup = bs4.BeautifulSoup(login_page.content, 'html5lib')
         result = soup.find('input', attrs={'name': '_csrf_token'}) #input tag, attribute name
         token = result['value']
 
@@ -30,15 +29,17 @@ class HRMTest(unittest.TestCase):
                         'txtUsername': 'admin',
                         'txtPassword': 'password'
                         }
-        resp = self.sess.post(self.url + authenticate_uri, data=login_data)
+        resp = sess.login(login_data)
 
         self.assertIn('/pim/viewEmployeeList', resp.url)
         # OR
         self.assertTrue(resp.url.endswith('/pim/viewEmployeeList'))
 
         # Step 4:  get the add employee page  - contains the FORM to add employee
-        add_emp_uri = '/pim/addEmployee'
-        resp = self.sess.get(self.url + add_emp_uri)
+        #add_emp_uri = '/pim/addEmployee'
+        #resp = self.sess.get(self.url + add_emp_uri)
+
+        resp = sess.get_add_emp_page()
 
         # Step 5: Extract CSRF token
         soup = bs4.BeautifulSoup(resp.content, 'html5lib')
@@ -63,11 +64,17 @@ class HRMTest(unittest.TestCase):
         }
 
         # Step 6: add the employee  - posting the new employee data  + CSRF token
-        resp = self.sess.post(self.url + add_emp_uri, data=emp_data)
+       # resp = self.sess.post(self.url + add_emp_uri, data=emp_data)
+
+        resp = sess.add_employee(emp_data)
+
         self.assertIn('/pim/viewPersonalDetails/empNumber', resp.url)
 
         # Optional step, to check that data posted correctly
-        resp = self.sess.get(resp.url)
+        #resp = self.sess.get(resp.url)
+
+        resp = sess.confirm_data(resp.url)
+
         soup = bs4.BeautifulSoup(resp.content, 'html5lib')
         actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
         self.assertEqual(str(emp_id), actual_emp_id)

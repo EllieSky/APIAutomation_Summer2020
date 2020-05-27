@@ -54,8 +54,18 @@ class HRMTest(unittest.TestCase):
 
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
 
+        # Step 4:  get the add employee page  - contains the FORM to add employee
+        emp_id = f.random_number(6)
+        resp = self.hrm.add_employee(emp_id)
+        self.assertIn('/pim/viewPersonalDetails/empNumber', resp.url)
+
+        # Optional step, to check that data posted correctly
+        # resp = self.hrm.session(resp.url)
+        # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        # actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
+
+        # self.assertEqual(str(emp_id), actual_emp_id)
+
 if __name__ == '__main__':
     unittest.main()
-
-
 

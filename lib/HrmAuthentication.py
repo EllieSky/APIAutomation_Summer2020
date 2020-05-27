@@ -13,7 +13,7 @@ class HrmAuthenticate:
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
         )
 
-    def login (self, username, password):
+    def login(self, username, password):
         login_uri = "/auth/login"
         # send request to get login page html
         resp = self.session.get(self.url + login_uri)
@@ -37,7 +37,7 @@ class HrmAuthenticate:
         return self.session.post(self.url + authenticate_uri, data=login_data)
 
     # Step 4:  get the add employee page  - contains the FORM to add employee
-    def add_employee (self):
+    def add_employee(self, emp_id):
         add_emp_uri = "/pim/addEmployee"
         resp = self.session.get(self.url + add_emp_uri)
         #  Extract CSRF token
@@ -48,12 +48,11 @@ class HrmAuthenticate:
 
         first_name = f.first_name()
         last_name = f.last_name()
-        email = f.email()
 
         emp_data = {
             'firstName': first_name,
             'lastName': last_name,
-            'email': email,
+            'employeeId': emp_id,
             '_csrf_token': token
         }
         # Step 6: add the employee  - posting the new employee data  + CSRF token
@@ -62,7 +61,8 @@ class HrmAuthenticate:
     # Login and submit a candidate application
     def add_candidate_application(self):
         add_application_uri = self.url + '/recruitment/addCandidate'
-        resp = self.session.get(self.url + add_application_uri)
+        resp = self.session.get(add_application_uri)
+
         #  extract CSRF token
         soup = bs4.BeautifulSoup(resp.content, 'html5lib')
         token = soup.find('input', attrs={'name': '_csrf_token'})['value']
@@ -80,4 +80,6 @@ class HrmAuthenticate:
             'emp_email': emp_email,
         }
         # add the candidate application  - posting the new app data  + CSRF token
-        return self.session.post(self.url + add_application_uri, data=application_data)
+        return self.session.post(add_application_uri, data=application_data)
+
+

@@ -1,33 +1,36 @@
 import unittest
 import bs4
+from faker import Faker
 from lib.HrmAuthentication import HrmAuthenticate
+
+f = Faker()
 
 
 class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
         self.url = "http://hrm-online.portnov.com/symfony/web/index.php"
-        self.sess = HrmAuthenticate()
+        self.hrm = HrmAuthenticate()
+
 
     def test_create_employee (self):
-        # # Step 1: get the landing page - contains login form
-        # response = self.sess.login('admin', 'password')
-        # self.assertTrue(response.ok)
-        # self.assertIn('/pim/viewEmployeeList', response.url)
-        # # OR
-        # self.assertTrue(response.url.endswith('/pim/viewEmployeeList'))
-        #
-        # # Step 4:  get the add employee page  - contains the FORM to add employee
-        # response = self.sess.add_employee()
-        # self.assertIn('/pim/viewPersonalDetails/empNumber', response.url)
-        #
-        # # Optional step, to check that data posted correctly
-        # resp = self.sess.get(response.url)
+        # Step 1: get the landing page - contains login form
+        response = self.hrm.login('admin', 'password')
+        self.assertTrue(response.ok)
+        self.assertIn('/pim/viewEmployeeList', response.url)
+        # OR
+        self.assertTrue(response.url.endswith('/pim/viewEmployeeList'))
+
+        # Step 4:  get the add employee page  - contains the FORM to add employee
+        emp_id = f.random_number(6)
+        resp = self.hrm.add_employee(emp_id)
+        self.assertIn('/pim/viewPersonalDetails/empNumber', resp.url)
+
+        # Optional step, to check that data posted correctly
+        # resp = self.hrm.session(resp.url)
         # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
         # actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
-        # # self.assertEqual(str(emp_id), actual_emp_id)
 
-        response = self.sess.add_candidate_application()
-        self.assertIn('/recruitment/addCandidate/id/027', response.url)
+        # self.assertEqual(str(emp_id), actual_emp_id)
 
 
     if __name__ == '__main__':

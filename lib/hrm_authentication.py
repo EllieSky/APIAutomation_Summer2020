@@ -49,6 +49,16 @@ class HRMAuthentication(object):
 
     def add_employee(self, emp_data):
         add_emp_uri = "/pim/addEmployee"
-        self.session.post(self.base_url + add_emp_uri, data=emp_data)
+        return self.session.post(self.base_url + add_emp_uri, data=emp_data)
+
+    def get(self, url):
+        return self.session.get(url)
+
+    def submit_candidate_application(self, submit_data):
+        submit_candidate_app = "/recruitment/addCandidate"
+        self.session.post(self.base_url + submit_candidate_app, data=submit_data)
+
+
+
 
 

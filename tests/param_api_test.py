@@ -7,11 +7,20 @@ from parameterized import parameterized
 
 class MyPositionsTests(unittest.TestCase):
     data = [
+        ('candidate happy path', 1, 200, 'OK', ''),
         ('user does not exist', 9999, 204, 'No Content', ''),
         ('letters', 'abc', 500, 'Internal Server Error', 'ER_BAD_FIELD_ERROR'),
         ('space', ' ', 204, 'No Content', ''),
         ('empty', '', 404, 'Not Found', '')
     ]
+
+    app_id_data = [
+        ('app_id happy path', 1, 200, 'OK', ''),
+        ('app id does not exist', 10, 204, 'No Content', ''),
+        ('app id does not exist', 9000, 204, 'No Content', '')
+    ]
+
+    login_account_json = {"email": "student@example.com", "password": "welcome"}
 
     def setUp(self) -> None:
         self.base_url = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
@@ -33,6 +42,17 @@ class MyPositionsTests(unittest.TestCase):
 
         my_positions = self.get_candidate_positions(user_id)
         self.assertEqual(exp_status_code, my_positions.status_code)
+        self.assertEqual(reason, my_positions.reason)
+
+        if expected_error_message:
+            json_my_positions = json.loads(my_positions.text)
+            self.assertEqual(json_my_positions['code'], expected_error_message)
+
+    @parameterized.expand(app_id_data)
+    def test_get_applications_id(self, test_name, app_id, status_code, reason, expected_error_message):
+
+        my_positions = self.get_candidate_positions(app_id)
+        self.assertEqual(status_code, my_positions.status_code)
         self.assertEqual(reason, my_positions.reason)
 
         if expected_error_message:

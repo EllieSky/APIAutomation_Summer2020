@@ -25,7 +25,7 @@ class HRMTest(unittest.TestCase):
         soup = BeautifulSoup(resp.content, 'html5lib')
         result = soup.find('input', attrs={'name': '_csrf_token'})
         token = result['value']
-
+        token = "d423bdbf9b5b8b80700bcdfff11e0915"
         authenticate_uri = '/auth/validateCredentials'
 
         # Step 3: login, by posting credentials + CSRF token

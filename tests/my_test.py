@@ -41,7 +41,7 @@ class CareerPortalTests(unittest.TestCase):
         my_positions = sess.get_candidate_positions(user_id)
         json_my_positions = json.loads(my_positions.text)
 
-        self.assertEqual(3, len(json_my_positions))
+        self.assertEqual(4, len(json_my_positions))
 
     def test_cannot_login(self):
         sess = Authenticate()
@@ -74,7 +74,7 @@ class CareerPortalTests(unittest.TestCase):
 
     def test_create_and_login(self):
         sess = Authenticate()
-        self.email = 'peter@pan9.com'
+        self.email = 'peter@pan17.com'
         self.password = 'test'
         response_data = sess.create_candidate('peter', 'pan', self.email, self.password)
         self.id = json.loads(response_data.text)['id']

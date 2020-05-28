@@ -1,3 +1,4 @@
+import datetime
 import random
 import time
 import unittest
@@ -5,7 +6,7 @@ import bs4
 import requests
 from faker import Faker
 from lib2.hrm_authenticate import Authenticate
-
+from datetime import date
 
 class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -78,6 +79,69 @@ class HRMTest(unittest.TestCase):
         soup = bs4.BeautifulSoup(resp.content, 'html5lib')
         actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
         self.assertEqual(str(emp_id), actual_emp_id)
+
+    def test_candidate_application(self):
+        sess = Authenticate()
+
+        login_page = sess.login_page()
+
+        soup = bs4.BeautifulSoup(login_page.content, 'html5lib')
+        result = soup.find('input', attrs={'name': '_csrf_token'})  # input tag, attribute name
+        token = result['value']
+
+        login_data = {'_csrf_token': token,
+                      'txtUsername': 'admin',
+                      'txtPassword': 'password'
+                      }
+        resp = sess.login(login_data)
+        self.assertIn('/pim/viewEmployeeList', resp.url)
+
+        candidate = sess.click_add_candidate()
+
+        soup = bs4.BeautifulSoup(candidate.content, 'html5lib')
+        result = soup.find('input', attrs={'name': 'addCandidate[_csrf_token]'})
+        token = result['value']
+
+        f = Faker()
+        first_name = f.first_name()
+        last_name = f.last_name()
+        email = f.email()
+
+        today = date.today()
+        today = today.strftime("%m-%d-%Y")
+
+        addCandidate = {
+            'addCandidate[_csrf_token]': token,
+            'addCandidate[firstName]': first_name,
+            'addCandidate[lastName]': last_name,
+            'addCandidate[email]': email,
+            'addCandidate[appliedDate]': today
+           # '_csrf_token': token,
+            #'firstName': first_name,
+            #'lastName': last_name,
+            #'email': email
+        }
+        add_candidate = sess.add_candidate(addCandidate)
+
+        # now = datetime.datetime.now()
+        # dd = now.strftime("%d")
+
+        # Optional step, to check that data posted correctly
+        # resp = self.sess.get(resp.url)
+
+        # resp = sess.confirm_candidate(resp.url)
+        #
+        # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        # actual_email = soup.select_one('#personal_txtEmployeeId')['value']
+        # self.assertEqual(str(email), actual_email)
+
+
+        print()
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

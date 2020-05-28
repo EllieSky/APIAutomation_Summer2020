@@ -22,3 +22,14 @@ class Authenticate(object):
 
     def confirm_data(self, new_emp_url):
         return self.session.get(new_emp_url)
+
+    def get_candidates(self):
+        return self.session.get(self.base_url + '/recruitment/viewCandidates')
+
+    def click_add_candidate(self):
+        return self.session.get(self.base_url + '/recruitment/addCandidate')
+
+    def add_candidate(self, addCandidate):
+        return self.session.post(self.base_url + '/recruitment/addCandidate/id', data=addCandidate)
+
+

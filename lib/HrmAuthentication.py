@@ -13,7 +13,7 @@ class HrmAuthenticate:
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
         )
 
-    def login(self, username, password):
+    def login (self, username, password):
         login_uri = "/auth/login"
         # send request to get login page html
         resp = self.session.get(self.url + login_uri)
@@ -37,7 +37,7 @@ class HrmAuthenticate:
         return self.session.post(self.url + authenticate_uri, data=login_data)
 
     # Step 4:  get the add employee page  - contains the FORM to add employee
-    def add_employee(self, emp_id):
+    def add_employee (self, emp_id):
         add_emp_uri = "/pim/addEmployee"
         resp = self.session.get(self.url + add_emp_uri)
         #  Extract CSRF token
@@ -59,7 +59,7 @@ class HrmAuthenticate:
         return self.session.post(self.url + add_emp_uri, data=emp_data)
 
     # Login and submit a candidate application
-    def add_candidate_application(self):
+    def add_candidate_application (self):
         add_application_uri = self.url + '/recruitment/addCandidate'
         resp = self.session.get(add_application_uri)
 
@@ -82,4 +82,11 @@ class HrmAuthenticate:
         # add the candidate application  - posting the new app data  + CSRF token
         return self.session.post(add_application_uri, data=application_data)
 
+    # def verify_candidate_data(self, url, emp_id):
+    #     response = self.session.get(url)
+    #     soup = bs4.BeautifulSoup(response.content, 'html5lib')
+    #     actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
+    #     return actual_emp_id == emp_id
 
+    def verify_candidate_data(self, url):
+        return self.session.get(url)

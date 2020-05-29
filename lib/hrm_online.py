@@ -44,16 +44,15 @@ class HrmOnline(object):
         actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
         return actual_emp_id
 
-    def add_candidate(self, cand_data):
+    def add_candidate(self, cand_data, resume=''):
         uri = '/recruitment/addCandidate'
         resp = self.sess.get(self.url + uri)
         token = self.extract_token(resp, 'addCandidate[_csrf_token]')
         cand_json = cand_data.copy()
         cand_json['addCandidate[_csrf_token]'] = token
-        resp = self.sess.post(self.url + uri, files={'addCandidate[resume]': ('', StringIO(''), 'application/octet'
-                                                                                                '-stream')},
-                              data=cand_json)
-        return resp
+        with open(resume, 'rb') if resume != '' else StringIO('') as resume_file:
+            return self.sess.post(self.url + uri, data=cand_json,
+                                  files={'addCandidate[resume]': (resume, resume_file, 'application/octet-stream')})
 
     @staticmethod
     def extract_token(resp, name='_csrf_token'):
@@ -104,7 +103,6 @@ class HrmOnline(object):
             'addCandidate[vacancy]': bs.find('option', attrs={'selected': 'selected'}).get('value', '')
         }
         return cand_data
-
 
 def get_input(soup, name):
     return soup.find('input', attrs={'name': name})['value']

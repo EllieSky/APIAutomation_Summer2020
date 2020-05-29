@@ -6,6 +6,7 @@ from lib.hrm_online import HrmOnline
 class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
         self.sess = HrmOnline()
+        self.resume_path = '/Users/Chaser/Desktop/resume.pdf'
 
     def test_create_employee(self):
         resp = self.sess.login('admin', 'password')
@@ -23,7 +24,7 @@ class HRMTest(unittest.TestCase):
         self.assertTrue(resp.url.endswith('/pim/viewEmployeeList'))
 
         cand_data = self.sess.generate_cand_data()
-        resp = self.sess.add_candidate(cand_data)
+        resp = self.sess.add_candidate(cand_data, self.resume_path)
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
 
         actual_cand_data = self.sess.extract_cand_data(resp)

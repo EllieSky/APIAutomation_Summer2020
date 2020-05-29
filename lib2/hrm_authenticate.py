@@ -1,6 +1,5 @@
 import requests
 
-
 class Authenticate(object):
     def __init__(self):
         self.base_url = 'http://hrm-online.portnov.com/symfony/web/index.php'

@@ -1,12 +1,11 @@
 import requests
-
 from lib.authentication import Authenticate
 from lib.candidates import Candidates
 from lib.positions import Positions
 
 
 class BaseClient(object):
-    def __init__(self, client=None):
+    def __init__ (self, client=None):
         self.client = client
         self.base_url = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
         self.session = requests.Session()
@@ -16,7 +15,7 @@ class BaseClient(object):
 
 
 class RecruitClient(BaseClient):
-    def __init__(self, client=None):
+    def __init__ (self, client=None):
         if client and isinstance(client, BaseClient):
             self.base_url = client.base_url
             self.session = client.session

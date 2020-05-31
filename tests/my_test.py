@@ -5,6 +5,7 @@ from lib.recruit_career.authentication import Authenticate
 from lib.recruit_career.rc_client import RecruitClient
 
 
+
 class YahooAPITestCase(unittest.TestCase):
     def test_for_successful_response (self):
         result = requests.get("http://www.yahoo.com")
@@ -32,11 +33,19 @@ class CareerPortalTests(unittest.TestCase):
         #
         # pos_client = Positions(auth_client)
 
-        #############
 
-        positions = client.positions.get_all_positions()
-        json_positions = json.loads(positions.text)
-        self.assertIsInstance(json_positions, list)
+        # verify user/POST
+        verify_response = client.authentication.perform_user_verification()
+        verify_content = json.loads(verify_response.content)
+
+        # # verify user_ID
+        # user_id = verify_content['id']
+        # email = verify_content['email']
+
+
+
+
+
 
     def test_cannot_login (self):
         sess = Authenticate()

@@ -1,4 +1,3 @@
-from urllib import response
 import bs4
 import requests
 from faker import Faker

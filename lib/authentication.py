@@ -14,7 +14,5 @@ class Authenticate(BaseClient):
     def perform_user_verification(self):
         return self.session.post(self.base_url + '/verify')
 
-
-    def get_candidate_positions (self, user_id):
+    def get_candidate_positions(self, user_id):
         return self.session.get(self.base_url + '/candidates/' + str(user_id) + '/positions')
-

@@ -2,6 +2,7 @@ import os
 import random
 import time
 import unittest
+from datetime import datetime
 
 import bs4
 from faker import Faker
@@ -25,9 +26,9 @@ class HRMTest(unittest.TestCase):
         self.assertTrue(resp.url.endswith('/pim/viewEmployeeList'))
 
         emp_number = str(time.time()).split('.')[-1]
-            # OR
+        # OR
         emp_number = random.randrange(100000, 999999)
-            # OR
+        # OR
         f = self.f
 
         first_name = f.first_name()
@@ -63,6 +64,24 @@ class HRMTest(unittest.TestCase):
         resp = self.hrm.add_candidate(first_name, last_name, email, resume)
 
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
+
+    def test_edit_employee(self):
+        self.hrm.login()
+
+        first_name = self.f.first_name()
+        middle_name = self.f.name()
+        last_name = self.f.last_name()
+        emp_number = self.f.random_number(6)
+        nick_name = self.f.name()
+        dob = datetime.today().strftime('%m-%d-%Y')
+
+        emp_id = self.hrm.add_employee(emp_number, first_name, last_name, middle_name).url.split('/')[-1]
+        resp = self.hrm.edit_employee(emp_id, {'personal[txtEmpNickName]': nick_name, 'personal[DOB]': dob})
+        self.assertIn('/pim/viewPersonalDetails/empNumber/' + emp_id, resp.url)
+
+        emp_data = self.hrm.extract_employee_data(emp_id)
+        self.assertEquals(nick_name, emp_data['personal[txtEmpNickName]'])
+        self.assertEquals(dob, emp_data['personal[DOB]'])
 
 
 if __name__ == '__main__':

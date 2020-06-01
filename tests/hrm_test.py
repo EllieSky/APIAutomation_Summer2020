@@ -1,12 +1,10 @@
 import os
-import time
 import random
+import time
 import unittest
-import bs4
 
-from requests import Session
+import bs4
 from faker import Faker
-from requests_toolbelt import MultipartEncoder
 
 from lib.hrm.steps import HRM
 
@@ -38,7 +36,7 @@ class HRMTest(unittest.TestCase):
 
         file_path = os.path.abspath("../download.jpeg")
 
-        resp = self.hrm.add_employee(emp_number, first_name, last_name, file_path)
+        resp = self.hrm.add_employee(emp_number, first_name, last_name, img_file=file_path)
 
         self.assertIn('/pim/viewPersonalDetails/empNumber', resp.url)
 

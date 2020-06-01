@@ -35,7 +35,7 @@ class HRM():
 
         return self.sess.post(self.url + authenticate_uri, data=login_data)
 
-    def add_employee(self, emp_id, first_name, last_name, img_file=None):
+    def add_employee(self, emp_id, first_name, last_name, middle_name='', img_file=None):
         # Step 1:  get the add employee page  - contains the FORM to add employee
         add_emp_uri = "/pim/addEmployee"
         resp = self.sess.get(self.url + add_emp_uri)
@@ -49,9 +49,10 @@ class HRM():
 
         emp_data = {
             'firstName': first_name,
+            'middleName': middle_name,
             'lastName': last_name,
-            'employeeId': emp_id,
-            'empNumber': emp_id,
+            'employeeId': str(emp_id),
+            'empNumber': str(emp_id),
             'photofile': (file_name, open(img_file, 'rb'), 'image/jpeg'),
             '_csrf_token': token
         }

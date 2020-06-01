@@ -50,8 +50,8 @@ class HRM():
         emp_data = {
             'firstName': first_name,
             'lastName': last_name,
-            'employeeId': emp_id,
-            'empNumber': emp_id,
+            'employeeId': str(emp_id),
+            'empNumber': str(emp_id),
             'photofile': (file_name, open(img_file, 'rb'), 'image/jpeg'),
             '_csrf_token': token
         }
@@ -96,6 +96,7 @@ class HRM():
         )
 
         self.sess.headers.update({'Content-Type': multipart_data.content_type})
+        print('test')
 
         # Step 3: add the candidate  - posting the candidate data  + CSRF token
         return self.sess.post(self.url + add_candidate_uri, data=multipart_data.to_string())

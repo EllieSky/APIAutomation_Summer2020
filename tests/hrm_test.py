@@ -1,11 +1,11 @@
+import os
 import time
 import random
 import unittest
 import bs4
 
-from requests import Session
 from faker import Faker
-from requests_toolbelt import MultipartEncoder
+
 
 from lib.hrm.steps import HRM
 

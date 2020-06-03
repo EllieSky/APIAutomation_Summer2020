@@ -5,6 +5,7 @@ import requests
 from parameterized import parameterized
 
 
+<<<<<<< HEAD
 class MyPositionsTests(unittest.TestCase):
     data = [
         ('candidate happy path', 1, 200, 'OK', ''),
@@ -27,17 +28,30 @@ class MyPositionsTests(unittest.TestCase):
         self.headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
 
         result = requests.post(self.base_url + '/login', json={"email": "student@example.com", "password": "welcome"})
-        self.assertEqual(200, result.status_code)
+=======
+class MyPositionsTest(unittest.TestCase):
+    positions_input = [
+        ('user does not exist', 9999, 204, ''),
+        ('letters', 'abc', 500, 'ER_BAD_FIELD_ERROR'),
+        ('space', ' ', 204, '')
+    ]
+    applications_id_input_pos = [
+        ('happy path', 2, 200, 'Principal Automation Engineer')
+    ]
+    applications_id_input_neg = [
+        ('application does not exist', 222, 400, 'Incorrect applicationId: 222'),
+        ('letters', 'abc', 500, 'ER_BAD_FIELD_ERROR'),
+        ('space', ' ', 400, 'Incorrect applicationId: 0')
+    ]
 
-        json_parsed = json.loads(result.text)
-        self.assertTrue(json_parsed['authenticated'])
+    def setUp(self) -> None:
+        self.base_url = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
+        self.headers = {
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
 
-        token = json_parsed['token']
+        result = self.login("student@example.com", "welcome")
 
-        self.authorization_header = {'Authorization': 'Bearer ' + token}
-        self.authorization_header.update(self.headers)
-
-    @parameterized.expand(data)
+    @parameterized.expand(applications_id_input_pos)
     def test_get_candidate_positions(self, test_name, user_id, exp_status_code, reason, expected_error_message):
 
         my_positions = self.get_candidate_positions(user_id)
@@ -48,7 +62,7 @@ class MyPositionsTests(unittest.TestCase):
             json_my_positions = json.loads(my_positions.text)
             self.assertEqual(json_my_positions['code'], expected_error_message)
 
-    @parameterized.expand(app_id_data)
+    @parameterized.expand(applications_id_input_pos)
     def test_get_applications_id(self, test_name, app_id, status_code, reason, expected_error_message):
 
         my_positions = self.get_candidate_positions(app_id)

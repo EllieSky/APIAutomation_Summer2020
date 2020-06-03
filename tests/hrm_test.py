@@ -35,7 +35,7 @@ class HRMTest(unittest.TestCase):
         last_name = f.last_name()
         emp_number = f.random_number(6)
 
-        file_path = os.path.abspath("../download.jpeg")
+        file_path = os.path.abspath("download.jpeg")
 
         resp = self.hrm.add_employee(emp_number, first_name, last_name, img_file=file_path)
 

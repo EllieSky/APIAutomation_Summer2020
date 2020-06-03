@@ -1,12 +1,32 @@
 import os
 import re
+from enum import Enum
 
 import bs4
 import requests
 from requests_toolbelt import MultipartEncoder
 
 
+class PersonalDetails(Enum):
+    EMP_NUMBER = 'txtEmpID'
+    FIRST_NAME = 'txtEmpFirstName'
+    MIDDLE_NAME = 'txtEmpMiddleName'
+    LAST_NAME = 'txtEmpLastName'
+    EMP_ID = 'txtEmployeeId'
+    OTHER_ID = 'txtOtherID'
+    LICENCE_NUMBER = 'txtLicenNo'
+    LICENCE_DATE = 'txtLicExpDate'
+    NIC_NUMBER = 'txtNICNo'
+    SSN = 'txtSINNo'
+    MARITAL_STATUS = 'cmbMarital'
+    NATIONALITY = 'cmbNation'
+    DOB = 'DOB'
+    NICK_NAME = 'txtEmpNickName'
+    MILITARY = 'txtMilitarySer'
+
+
 class HRM():
+
     def __init__(self):
         self.url = "http://hrm-online.portnov.com/symfony/web/index.php"
         self.sess = requests.Session()
@@ -68,7 +88,8 @@ class HRM():
         if not num_id:
             match = re.match(r'.*/(\d+)', emp_id)
             num_id = match.group(1) if match else None
-        return self.sess.get(self.url + '/pim/viewPersonalDetails/empNumber/' + num_id)
+        # return self.sess.get(self.url + '/pim/viewPersonalDetails/empNumber/' + num_id)
+        return self._make_request('GET', url=self.url + '/pim/viewPersonalDetails/empNumber/' + num_id)
 
     def close(self):
         self.sess.close()
@@ -100,3 +121,36 @@ class HRM():
 
         # Step 3: add the candidate  - posting the candidate data  + CSRF token
         return self.sess.post(self.url + add_candidate_uri, data=multipart_data.to_string())
+
+    def update_employee_personal_details(self, emp_number, *args):
+        prefix = 'personal[{0}]'
+
+        resp = self.get_employee_details(emp_number)
+
+        # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        _csrf_token = resp.html_data.find(attrs={'name': 'personal[_csrf_token]'})['value']
+
+        personal_details_data = { 'personal[_csrf_token]': _csrf_token }
+
+        # member of the PersonalDetails Enum
+        for member in PersonalDetails:
+            field_name = prefix.format(member.value)
+            info = resp.html_data.find(attrs={'name': field_name}).get('value', None)
+            personal_details_data.update({ field_name: info })
+
+        for (member, value) in args:
+            if member in PersonalDetails:
+                personal_details_data.update({ prefix.format(member.value): value })
+
+        return self._make_request('POST', url=self.url + '/pim/viewEmployee/empNumber/' + str(emp_number), data=personal_details_data)
+
+        # resp = self.sess.post(self.url + '/pim/viewEmployee/empNumber/' + str(emp_number), data=personal_details_data)
+        #
+        # resp.html_data = bs4.BeautifulSoup(resp.content, 'html5lib')
+        #
+        # return resp
+
+    def _make_request(self, method, **kwargs):
+        resp = getattr(self.sess, method.lower())(**kwargs)
+        resp.html_data = bs4.BeautifulSoup(resp.content, 'html5lib')
+        return resp

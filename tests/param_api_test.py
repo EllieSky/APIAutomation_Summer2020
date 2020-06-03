@@ -5,7 +5,7 @@ import requests
 from parameterized import parameterized
 
 
-<<<<<<< HEAD
+
 class MyPositionsTests(unittest.TestCase):
     data = [
         ('candidate happy path', 1, 200, 'OK', ''),
@@ -28,7 +28,7 @@ class MyPositionsTests(unittest.TestCase):
         self.headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
 
         result = requests.post(self.base_url + '/login', json={"email": "student@example.com", "password": "welcome"})
-=======
+
 class MyPositionsTest(unittest.TestCase):
     positions_input = [
         ('user does not exist', 9999, 204, ''),

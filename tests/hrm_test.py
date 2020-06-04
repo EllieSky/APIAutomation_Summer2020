@@ -8,14 +8,14 @@ from lib.hrm.steps import HRM
 
 
 class HRMTest(unittest.TestCase):
-    def setUp (self) -> None:
+    def setUp(self) -> None:
         self.hrm = HRM()
         self.f = Faker()
 
-    def tearDown (self) -> None:
+    def tearDown(self) -> None:
         self.hrm.close()
 
-    def test_create_employee (self):
+    def test_create_employee(self):
         resp = self.hrm.login()
 
         self.assertIn('/pim/viewEmployeeList', resp.url)
@@ -23,14 +23,14 @@ class HRMTest(unittest.TestCase):
         self.assertTrue(resp.url.endswith('/pim/viewEmployeeList'))
 
         emp_number = str(time.time()).split('.')[-1]
-        # OR
+            # OR
         emp_number = random.randrange(100000, 999999)
-        # OR
+            # OR
         f = self.f
 
         first_name = f.first_name()
         last_name = f.last_name()
-        emp_number = f.random_number(6)
+        emp_number = str(f.random_number(6))
 
         file_path = os.path.abspath("../download.jpeg")
 
@@ -46,7 +46,7 @@ class HRMTest(unittest.TestCase):
 
         self.assertEqual(str(emp_number), actual_emp_id)
 
-    def test_submit_application (self):
+    def test_submit_application(self):
         # Step 1: authenticate
         self.hrm.login()
 

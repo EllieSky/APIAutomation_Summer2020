@@ -1,6 +1,5 @@
 import os
 import re
-
 import bs4
 import requests
 from requests_toolbelt import MultipartEncoder
@@ -81,7 +80,7 @@ class HRM():
         # Step 2: Extract CSRF token
         soup = bs4.BeautifulSoup(resp.content, 'html5lib')
         token = soup.find('input', attrs={'id': 'addCandidate__csrf_token'})['value']
-
+        # import os.python
         file_name = os.path.basename(resume)
 
         multipart_data = MultipartEncoder(

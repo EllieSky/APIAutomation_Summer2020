@@ -3,6 +3,7 @@ import unittest
 import requests
 
 from lib.recruit_career.authentication import Authenticate
+from lib.recruit_career.positions import get_candidate_positions
 from lib.recruit_career.rc_client import RecruitClient
 
 
@@ -18,7 +19,7 @@ class CareerPortalTests(unittest.TestCase):
     def setUp (self) -> None:
         pass
 
-    def test_login (self):
+    def test_login(self):
         client = RecruitClient()
         # client.authentication.authenticate('jane@example.com', 'pass')
 
@@ -56,7 +57,8 @@ class CareerPortalTests(unittest.TestCase):
         self.assertTrue(email == 'student@example.com')
         self.assertEqual(8, user_id)
 
-        my_positions = client.candidate.get_candidate_positions(user_id)
+        my_positions = get_candidate_positions(client.candidate.base_url, client.candidate.authorization_header,
+                                               user_id)
         json_my_positions = json.loads(my_positions.text)
 
         self.assertLessEqual(1, len(json_my_positions))

@@ -4,6 +4,8 @@ import unittest
 import requests
 from parameterized import parameterized
 
+from lib.recruit_career.positions import get_candidate_positions
+
 
 class MyPositionsTests(unittest.TestCase):
     data = [
@@ -31,7 +33,7 @@ class MyPositionsTests(unittest.TestCase):
     @parameterized.expand(data)
     def test_get_candidate_positions(self, test_name, user_id, exp_status_code, reason, expected_error_message):
 
-        my_positions = self.get_candidate_positions(user_id)
+        my_positions = get_candidate_positions(self.base_url, self.authorization_header, user_id)
         self.assertEqual(exp_status_code, my_positions.status_code)
         self.assertEqual(reason, my_positions.reason)
 
@@ -39,8 +41,6 @@ class MyPositionsTests(unittest.TestCase):
             json_my_positions = json.loads(my_positions.text)
             self.assertEqual(json_my_positions['code'], expected_error_message)
 
-    def get_candidate_positions(self, user_id):
-        return requests.get(self.base_url + '/candidates/' + str(user_id) + '/positions', headers = self.authorization_header)
 
 if __name__ == '__main__':
     unittest.main()

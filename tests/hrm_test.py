@@ -3,8 +3,12 @@ import time
 import random
 import unittest
 import bs4
+
+from requests import Session
 from faker import Faker
-from lib.hrm.steps import HRM
+from requests_toolbelt import MultipartEncoder
+
+from lib.hrm.steps import HRM, PersonalDetails
 
 
 class HRMTest(unittest.TestCase):
@@ -40,9 +44,9 @@ class HRMTest(unittest.TestCase):
 
         # Optional step, to check that data posted correctly
         resp = self.hrm.get_employee_details(resp.url)
-        soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
 
-        actual_emp_id = soup.select_one('#personal_txtEmployeeId')['value']
+        actual_emp_id = resp.html_data.select_one('#personal_txtEmployeeId')['value']
 
         self.assertEqual(str(emp_number), actual_emp_id)
 
@@ -62,6 +66,21 @@ class HRMTest(unittest.TestCase):
 
         self.assertIn('/recruitment/addCandidate/id/', resp.url)
 
+    def test_edit_personal_details(self):
+        emp_number = 3450
+
+        self.hrm.login()
+
+        nick_name = self.f.word().title()
+        ssn = self.f.ssn()
+
+        resp = self.hrm.update_employee_personal_details(emp_number,
+                                                         (PersonalDetails.NICK_NAME, nick_name),
+                                                         (PersonalDetails.SSN, ssn))
+        # soup = bs4.BeautifulSoup(resp.content, 'html5lib')
+        txtEmpNickName = resp.html_data.find(attrs={'name': 'personal[txtEmpNickName]'})['value']
+
+        self.assertEqual(nick_name, txtEmpNickName)
 
 if __name__ == '__main__':
     unittest.main()

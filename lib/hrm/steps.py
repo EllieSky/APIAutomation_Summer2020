@@ -134,8 +134,11 @@ class HRM():
         # member of the PersonalDetails Enum
         for member in PersonalDetails:
             field_name = prefix.format(member.value)
+            # get method - what you want to extract
             info = resp.html_data.find(attrs={'name': field_name}).get('value', None)
             personal_details_data.update({ field_name: info })
+
+        # need to plugin personalDetails in *args. Need to check in IF that user input is a part a personalDetails
 
         for (member, value) in args:
             if member in PersonalDetails:
@@ -148,7 +151,7 @@ class HRM():
         # resp.html_data = bs4.BeautifulSoup(resp.content, 'html5lib')
         #
         # return resp
-
+    # sess6, p2,1:15
     def _make_request(self, method, **kwargs):
         resp = getattr(self.sess, method.lower())(**kwargs)
         resp.html_data = bs4.BeautifulSoup(resp.content, 'html5lib')

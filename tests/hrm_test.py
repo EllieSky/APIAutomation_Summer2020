@@ -135,7 +135,6 @@ class HRMTest(unittest.TestCase):
         # actual_email = soup.select_one('#personal_txtEmployeeId')['value']
         # self.assertEqual(str(email), actual_email)
 
-
         print()
 
 if __name__ == '__main__':

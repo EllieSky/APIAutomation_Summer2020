@@ -1,0 +1,60 @@
+git clone <url>
+   copy remote repository to local disk
+
+git add
+   add changed filed to your local git index for tracking
+
+if you don't want git to ever track a file for changes... add it to .gitignore file
+
+git commit (-m)
+   to save changes locally
+
+git push
+   publish our commited changes to the remote repo
+
+TO GET YOUR LOCAL MASTER UP TO DATE WITH NEW CHANGES:
+
+git checkout master  <---  optional
+   to ensure you are on the local copy of the master brach
+
+git pull
+   to get all of the new changes downloaded to your local disk
+
+BUT IF YOU ARE MAKING CHANGES TO MASTER
+OR
+IF YOU ARE WORKING FROM YOUR OWN BRANCH
+
+git fetch
+   find out IF changes were made to the remote repo
+
+git checkout <your_personal_branch_name>
+
+git rebase origin/master
+   will pull all remote changes to the remote master branch and apply them to your branch below your change
+
+git merge origin/master
+   will pull all remote changes to the remote master branch and apply them to your branch on top of your change
+
+
+   master 1 -> 2 -> 3 -> their_change
+
+   your_branch 1 -> 2 -> 3 -> your_change  ...
+
+if you rebase:  1 -> 2 -> 3 -> their_change  -> your_change
+
+if you merge:  1 -> 2 -> 3 -> your_change -> their_change
+
+
+git stash
+   - if you want to save changes you made, but not commit them, and simultaniously remove them to use later
+
+git stash apply
+   - to restore stashed uncommited changes
+
+
+git cherry-pick
+	- to pick and choose one commit at a time, which changes get applied to a branch
+
+git commit --amend
+	only use if you have not pushed your previous commit to the remote repo
+	used to add additional small changes to the previous commit

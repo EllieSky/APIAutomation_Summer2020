@@ -56,7 +56,6 @@ class CareerPortalTests(unittest.TestCase):
         count1 = len(json_all_candidates)
         print('Total number of candidates: ' + str(count1))
 
-
     def test_add_candidate(self):
         sess = Authenticate()
         all_candidates = sess.get_all_candidates()
@@ -102,6 +101,7 @@ class CareerPortalTests(unittest.TestCase):
 
         if id not in ids:
             print('Candidate not found with id: ' + str(id))
+
 
 if __name__ == '__main__':
     unittest.main()

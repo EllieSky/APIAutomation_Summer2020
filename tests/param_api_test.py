@@ -1,8 +1,17 @@
 import json
+import csv
 import unittest
 
 import requests
 from parameterized import parameterized
+
+
+def get_data_from_csv_file():
+    with open('../data.csv', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)
+        res = list(map(tuple, reader))
+        return res
 
 
 class MyPositionsTests(unittest.TestCase):
@@ -28,11 +37,12 @@ class MyPositionsTests(unittest.TestCase):
         self.authorization_header = {'Authorization': 'Bearer ' + token}
         self.authorization_header.update(self.headers)
 
-    @parameterized.expand(data)
+    # @parameterized.expand(data)
+    @parameterized.expand(get_data_from_csv_file)
     def test_get_candidate_positions(self, test_name, user_id, exp_status_code, reason, expected_error_message):
 
         my_positions = self.get_candidate_positions(user_id)
-        self.assertEqual(exp_status_code, my_positions.status_code)
+        self.assertEqual(int(exp_status_code), my_positions.status_code)
         self.assertEqual(reason, my_positions.reason)
 
         if expected_error_message:

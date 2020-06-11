@@ -26,7 +26,6 @@ class PersonalDetails(Enum):
 
 
 class HRM():
-
     def __init__(self):
         self.url = "http://hrm-online.portnov.com/symfony/web/index.php"
         self.sess = requests.Session()
@@ -105,21 +104,22 @@ class HRM():
 
         file_name = os.path.basename(resume)
 
-        multipart_data = MultipartEncoder(
-            fields={
-                'addCandidate[_csrf_token]': token,
-                'addCandidate[firstName]': first_name,
-                'addCandidate[lastName]': last_name,
-                'addCandidate[resume]': (file_name, open(resume, 'rb'), 'text/plain'),
-                'addCandidate[appliedDate]': '05-27-2020',
-                'addCandidate[email]': email
-            }
-        )
+        with open(resume, 'rb') as file:
+            multipart_data = MultipartEncoder(
+                fields={
+                    'addCandidate[_csrf_token]': token,
+                    'addCandidate[firstName]': first_name,
+                    'addCandidate[lastName]': last_name,
+                    'addCandidate[resume]': (file_name, open(resume, 'rb'), 'text/plain'),
+                    'addCandidate[appliedDate]': '05-27-2020',
+                    'addCandidate[email]': email
+                }
+            )
 
-        self.sess.headers.update({'Content-Type': multipart_data.content_type})
+            self.sess.headers.update({'Content-Type': multipart_data.content_type})
 
-        # Step 3: add the candidate  - posting the candidate data  + CSRF token
-        return self.sess.post(self.url + add_candidate_uri, data=multipart_data.to_string())
+            # Step 3: add the candidate  - posting the candidate data  + CSRF token
+            return self.sess.post(self.url + add_candidate_uri, data=multipart_data.to_string())
 
     def update_employee_personal_details(self, emp_number, *args):
         prefix = 'personal[{0}]'

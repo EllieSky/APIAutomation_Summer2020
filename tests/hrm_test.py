@@ -4,12 +4,9 @@ import random
 import unittest
 import bs4
 
-from requests import Session
 from faker import Faker
-from requests_toolbelt import MultipartEncoder
 
 from lib.hrm.steps import HRM, PersonalDetails
-
 
 class HRMTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -64,7 +61,7 @@ class HRMTest(unittest.TestCase):
 
         resp = self.hrm.add_candidate(first_name, last_name, email, resume)
 
-        self.assertIn('/recruitment/addCandidate/id/', resp.url)
+        self.assertRegex(resp.url, '.*/recruitment/addCandidate/id/(\d+)',)
 
     def test_edit_personal_details(self):
         emp_number = 3450

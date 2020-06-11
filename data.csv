@@ -1,0 +1,5 @@
+test_name,user_id,exp_status_code,reason,expected_error_message
+user does not exist,9999,204,No Content,
+letters,abc,500,Internal Server Error,ER_BAD_FIELD_ERROR
+space, ,204,No Content,
+empty,,404,Not Found,
